@@ -30,10 +30,10 @@
 
   const navItems = Array.from(nav.querySelectorAll('.nav__links li'));
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const duration = 1900;
+  const duration = 2534;
   const triggerScroll = 24;
   const segment = 0.62;
-  const step = 0.19;
+  const step = 0.1144;
   const slideGap = 48;
   const clamp = value => Math.min(1, Math.max(0, value));
 
@@ -59,6 +59,15 @@
   };
   const ease = bezier(0.32, 0.72, 0, 1);
 
+  // Damped spring: overshoots the target by ~5% then settles, like a released rubber band
+  const springK = 7.5;
+  const springW = Math.PI * 2.1;
+  const spring = x => {
+    if (x <= 0) return 0;
+    if (x >= 1) return 1;
+    return 1 - Math.exp(-springK * x) * Math.cos(springW * x);
+  };
+
   let offsets = [];
   let progress = 0;
   let target = 0;
@@ -82,25 +91,42 @@
     renderNav();
   };
 
-  const renderNav = () => {
+  const lastPos = [];
+  const blurs = [];
+  const maxBlur = 5;
+
+  // Overlapping vertical/horizontal phases make each item travel along a curve instead of an L-shaped path
+  const renderNav = (dt = 0) => {
     if (!desktopQuery.matches || !offsets.length) return;
     nav.style.setProperty('--nav-progress', ease(progress).toFixed(3));
     navItems.forEach((item, index) => {
       const t = ease(clamp((progress - index * step) / segment));
-      const riseShare = index === 0 ? 0 : 0.35;
-      const rise = riseShare ? ease(clamp(t / riseShare)) : 0;
-      const slide = ease(clamp((t - riseShare) / (1 - riseShare)));
-      item.style.transform = `translate(${offsets[index].x * slide}px, ${offsets[index].y * rise}px)`;
+      const rise = index === 0 ? 0 : spring(clamp(t / 0.72));
+      const slide = spring(clamp((t - 0.1) / 0.9));
+      const x = offsets[index].x * slide;
+      const y = offsets[index].y * rise;
+      item.style.transform = `translate(${x.toFixed(2)}px, ${y.toFixed(2)}px)`;
+      const prev = lastPos[index] || { x, y };
+      const speed = dt > 0 ? Math.hypot(x - prev.x, y - prev.y) / dt : 0;
+      const goal = Math.min(maxBlur, speed * 1.6);
+      blurs[index] = (blurs[index] || 0) + (goal - (blurs[index] || 0)) * 0.35;
+      const amount = blurs[index] < 0.15 ? 0 : blurs[index];
+      item.style.filter = amount ? `blur(${amount.toFixed(2)}px)` : '';
+      lastPos[index] = { x, y };
     });
   };
-
   const tick = now => {
     const delta = Math.min(now - lastTime, 50);
     lastTime = now;
     const direction = Math.sign(target - progress);
     progress = clamp(progress + direction * delta / duration);
     if ((direction > 0 && progress >= target) || (direction < 0 && progress <= target)) progress = target;
-    renderNav();
+    renderNav(delta);
+    if (progress === target) {
+      blurs.fill(0);
+      navItems.forEach(item => { item.style.filter = ''; });
+      lastPos.length = 0;
+    }
     frame = progress === target ? 0 : requestAnimationFrame(tick);
   };
 
