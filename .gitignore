@@ -3,3 +3,13 @@ _site/
 .sass-cache/
 .bundle/
 vendor/bundle/
+.DS_Store
+.vinext/
+.wrangler/
+dist/
+node_modules/
+out/
+works(1).zip
+works/pkmone/
+works/vastbit/
+works/zilo/
