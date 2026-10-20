@@ -33,7 +33,7 @@
   const duration = 2534;
   const triggerScroll = 24;
   const segment = 0.62;
-  const step = 0.1144;
+  const step = 0.0762;
   const slideGap = 48;
   const clamp = value => Math.min(1, Math.max(0, value));
 

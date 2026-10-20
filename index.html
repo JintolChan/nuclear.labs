@@ -640,7 +640,8 @@ body {
 }
 
 .process__number {
-  font-size: 0.85cqw;
+  font-size: 1.4cqw;
+  font-weight: 300;
   line-height: 1;
 }
 
@@ -648,10 +649,31 @@ body {
   position: absolute;
   top: 1.45cqw;
   right: 1.5cqw;
-  font-size: 1cqw;
-  line-height: 1;
+  width: 1.04cqw;
+  height: 1.04cqw;
+  font-size: 0;
   opacity: 0;
   transition: opacity 220ms ease;
+}
+
+.process__arrow::before,
+.process__arrow::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: currentColor;
+  transform: translate(-50%, -50%);
+}
+
+.process__arrow::before {
+  width: 100%;
+  height: max(0.8px, 0.048cqw);
+}
+
+.process__arrow::after {
+  width: max(0.8px, 0.048cqw);
+  height: 100%;
 }
 
 .process__step:hover .process__arrow,
@@ -682,6 +704,59 @@ body {
   color: rgba(0, 0, 0, 0.62);
 }
 
+.process__step > div {
+  position: relative;
+  z-index: 1;
+}
+
+.process__canvas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 67.6%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 260ms ease;
+}
+
+.process__step--anim .process__title {
+  width: fit-content;
+  transform-origin: left bottom;
+  transition: transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.process__step--anim .process__summary {
+  transition: color 220ms ease, opacity 380ms ease, filter 380ms ease, transform 380ms ease;
+}
+
+.process__step--anim:hover .process__canvas,
+.process__step--anim:focus-visible .process__canvas {
+  opacity: 1;
+}
+
+.process__step--anim:hover .process__title,
+.process__step--anim:focus-visible .process__title {
+  transform: translateY(var(--title-shift, 0px)) scale(var(--title-scale, 1));
+}
+
+.process__step--anim:hover .process__summary,
+.process__step--anim:focus-visible .process__summary {
+  opacity: 0;
+  filter: blur(14px);
+  transform: translateY(0.8em) scaleY(1.4);
+}
+
+@media (hover: none) {
+  .process__step--anim .process__summary { filter: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .process__step--anim .process__title,
+  .process__step--anim .process__summary { transition: none; }
+}
+
 @media (max-width: 768px) {
   .process {
     padding: 4rem 1.5rem 8rem;
@@ -699,13 +774,14 @@ body {
   }
 
   .process__number {
-    font-size: 0.75rem;
+    font-size: 1.3rem;
   }
 
   .process__arrow {
     top: 1rem;
     right: 1.1rem;
-    font-size: 0.9rem;
+    width: 0.96rem;
+    height: 0.96rem;
   }
 
   .process__title {
@@ -1320,28 +1396,30 @@ body {
 <section class="process" id="process" aria-labelledby="process-title">
   <h2 class="selected-cases__title" id="process-title">How We Build</h2>
   <ol class="process__grid">
-    <li class="process__step" tabindex="0">
-      <span class="process__number">01</span><span class="process__arrow" aria-hidden="true">↗</span>
+    <li class="process__step process__step--anim" tabindex="0" data-frames="{{ '/frames/discovery/' | relative_url }}" data-frame-count="201">
+      <canvas class="process__canvas" width="480" height="480" aria-hidden="true"></canvas>
+      <span class="process__number">01</span><span class="process__arrow" aria-hidden="true">+</span>
       <div><h3 class="process__title">Discovery</h3><p class="process__summary">Research, workshops and goal setting to understand the brand, audience and market.</p></div>
     </li>
-    <li class="process__step" tabindex="0">
-      <span class="process__number">02</span><span class="process__arrow" aria-hidden="true">↗</span>
+    <li class="process__step process__step--anim" tabindex="0" data-frames="{{ '/frames/strategy/' | relative_url }}" data-frame-count="121">
+      <canvas class="process__canvas" width="480" height="480" aria-hidden="true"></canvas>
+      <span class="process__number">02</span><span class="process__arrow" aria-hidden="true">+</span>
       <div><h3 class="process__title">Strategy</h3><p class="process__summary">A clear positioning, narrative and roadmap that guides every design decision.</p></div>
     </li>
     <li class="process__step" tabindex="0">
-      <span class="process__number">03</span><span class="process__arrow" aria-hidden="true">↗</span>
+      <span class="process__number">03</span><span class="process__arrow" aria-hidden="true">+</span>
       <div><h3 class="process__title">Identity</h3><p class="process__summary">Logo, typography, color and a visual language built to be recognized.</p></div>
     </li>
     <li class="process__step" tabindex="0">
-      <span class="process__number">04</span><span class="process__arrow" aria-hidden="true">↗</span>
+      <span class="process__number">04</span><span class="process__arrow" aria-hidden="true">+</span>
       <div><h3 class="process__title">Design</h3><p class="process__summary">Product, interface and campaign design refined through rapid iteration.</p></div>
     </li>
     <li class="process__step" tabindex="0">
-      <span class="process__number">05</span><span class="process__arrow" aria-hidden="true">↗</span>
+      <span class="process__number">05</span><span class="process__arrow" aria-hidden="true">+</span>
       <div><h3 class="process__title">Build</h3><p class="process__summary">Websites and digital experiences developed with precision and performance.</p></div>
     </li>
     <li class="process__step" tabindex="0">
-      <span class="process__number">06</span><span class="process__arrow" aria-hidden="true">↗</span>
+      <span class="process__number">06</span><span class="process__arrow" aria-hidden="true">+</span>
       <div><h3 class="process__title">Launch</h3><p class="process__summary">Hands-on support to bring the system to market and keep it consistent.</p></div>
     </li>
   </ol>
@@ -1351,7 +1429,78 @@ body {
 
 <script src="{{ '/site-shell.js' | relative_url }}" defer></script>
 <script>
-const heroContent = document.querySelector('.hero__content');
+document.querySelectorAll('.process__step--anim').forEach((step) => {
+  const canvas = step.querySelector('.process__canvas');
+  const ctx = canvas.getContext('2d');
+  const title = step.querySelector('.process__title');
+  const summary = step.querySelector('.process__summary');
+  const base = step.dataset.frames;
+  const total = Number(step.dataset.frameCount);
+  const fps = 30;
+  let images = null;
+  let frame = 0;
+  let rafId = 0;
+  let last = 0;
+
+  const draw = (i) => {
+    const img = images && images[i];
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (img && img.complete && img.naturalWidth) ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  };
+
+  const load = () => {
+    if (images) return;
+    images = Array.from({ length: total }, (_, i) => {
+      const img = new Image();
+      img.src = base + String(i + 1).padStart(3, '0') + '.webp';
+      return img;
+    });
+    images[0].onload = () => draw(0);
+  };
+
+  const measure = () => {
+    const titleStyle = getComputedStyle(title);
+    const gap = parseFloat(titleStyle.marginBottom) || 0;
+    const titleHeight = title.offsetHeight;
+    const heightScale = (titleHeight + gap + summary.offsetHeight) / titleHeight;
+    const widthScale = (step.clientWidth - 2 * parseFloat(getComputedStyle(step).paddingLeft)) / title.scrollWidth;
+    step.style.setProperty('--title-shift', (gap + summary.offsetHeight) + 'px');
+    step.style.setProperty('--title-scale', Math.max(1, Math.min(heightScale, widthScale) * 0.5).toFixed(3));
+  };
+
+  const tick = (now) => {
+    if (now - last >= 1000 / fps) {
+      last = now;
+      frame = (frame + 1) % total;
+      draw(frame);
+    }
+    rafId = requestAnimationFrame(tick);
+  };
+
+  const start = () => {
+    load();
+    measure();
+    if (reducedMotionQuery.matches || rafId) return;
+    rafId = requestAnimationFrame(tick);
+  };
+
+  const stop = () => {
+    cancelAnimationFrame(rafId);
+    rafId = 0;
+    setTimeout(() => {
+      if (!rafId) { frame = 0; draw(0); }
+    }, 260);
+  };
+
+  step.addEventListener('mouseenter', start);
+  step.addEventListener('focus', start);
+  step.addEventListener('mouseleave', stop);
+  step.addEventListener('blur', stop);
+  window.addEventListener('resize', measure);
+});
+</script>
+<script>
+const heroContent =  document.querySelector('.hero__content');
 const description = document.querySelector('.hero__desc');
 const menuLink = document.querySelector('.nav__link');
 
