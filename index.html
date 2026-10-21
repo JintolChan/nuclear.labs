@@ -732,17 +732,20 @@ body {
 }
 
 .process__step--anim:hover .process__canvas,
-.process__step--anim:focus-visible .process__canvas {
+.process__step--anim:focus-visible .process__canvas,
+.process__step--anim.is-active .process__canvas {
   opacity: 1;
 }
 
 .process__step--anim:hover .process__title,
-.process__step--anim:focus-visible .process__title {
+.process__step--anim:focus-visible .process__title,
+.process__step--anim.is-active .process__title {
   transform: translateY(var(--title-shift, 0px)) scale(var(--title-scale, 1));
 }
 
 .process__step--anim:hover .process__summary,
-.process__step--anim:focus-visible .process__summary {
+.process__step--anim:focus-visible .process__summary,
+.process__step--anim.is-active .process__summary {
   opacity: 0;
   filter: blur(14px);
   transform: translateY(0.8em) scaleY(1.4);
@@ -768,9 +771,14 @@ body {
 
   .process__step {
     aspect-ratio: auto;
-    min-height: 13rem;
+    min-height: 10.4rem;
     padding: 1.1rem;
-    gap: 3rem;
+    gap: 2.4rem;
+    overflow: visible;
+  }
+
+  .process__step--anim.is-active {
+    z-index: 2;
   }
 
   .process__number {
@@ -1406,7 +1414,8 @@ body {
       <span class="process__number">02</span><span class="process__arrow" aria-hidden="true">+</span>
       <div><h3 class="process__title">Strategy</h3><p class="process__summary">A clear positioning, narrative and roadmap that guides every design decision.</p></div>
     </li>
-    <li class="process__step" tabindex="0">
+    <li class="process__step process__step--anim" tabindex="0" data-frames="{{ '/frames/identity/' | relative_url }}" data-frame-count="121">
+      <canvas class="process__canvas" width="480" height="480" aria-hidden="true"></canvas>
       <span class="process__number">03</span><span class="process__arrow" aria-hidden="true">+</span>
       <div><h3 class="process__title">Identity</h3><p class="process__summary">Logo, typography, color and a visual language built to be recognized.</p></div>
     </li>
@@ -1434,6 +1443,8 @@ document.querySelectorAll('.process__step--anim').forEach((step) => {
   const ctx = canvas.getContext('2d');
   const title = step.querySelector('.process__title');
   const summary = step.querySelector('.process__summary');
+  const strategyStep = document.querySelector('[data-frames*="/frames/strategy/"]');
+  const scaleReference = title.textContent.trim() === 'Identity' ? strategyStep : step;
   const base = step.dataset.frames;
   const total = Number(step.dataset.frameCount);
   const fps = 30;
@@ -1461,8 +1472,11 @@ document.querySelectorAll('.process__step--anim').forEach((step) => {
   const measure = () => {
     const titleStyle = getComputedStyle(title);
     const gap = parseFloat(titleStyle.marginBottom) || 0;
+    const referenceTitle = scaleReference.querySelector('.process__title');
+    const referenceSummary = scaleReference.querySelector('.process__summary');
+    const referenceGap = parseFloat(getComputedStyle(referenceTitle).marginBottom) || 0;
     const titleHeight = title.offsetHeight;
-    const heightScale = (titleHeight + gap + summary.offsetHeight) / titleHeight;
+    const heightScale = (referenceTitle.offsetHeight + referenceGap + referenceSummary.offsetHeight) / referenceTitle.offsetHeight;
     const widthScale = (step.clientWidth - 2 * parseFloat(getComputedStyle(step).paddingLeft)) / title.scrollWidth;
     step.style.setProperty('--title-shift', (gap + summary.offsetHeight) + 'px');
     step.style.setProperty('--title-scale', Math.max(1, Math.min(heightScale, widthScale) * 0.5).toFixed(3));
@@ -1497,6 +1511,20 @@ document.querySelectorAll('.process__step--anim').forEach((step) => {
   step.addEventListener('mouseleave', stop);
   step.addEventListener('blur', stop);
   window.addEventListener('resize', measure);
+
+  const mobileQuery = window.matchMedia('(max-width: 768px)');
+  const visibilityObserver = new IntersectionObserver(([entry]) => {
+    if (!mobileQuery.matches) {
+      step.classList.remove('is-active');
+      return;
+    }
+
+    step.classList.toggle('is-active', entry.isIntersecting);
+    if (entry.isIntersecting) start();
+    else stop();
+  }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
+
+  visibilityObserver.observe(step);
 });
 </script>
 <script>
