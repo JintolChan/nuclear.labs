@@ -38,7 +38,8 @@ permalink: /work/
       {% for work in works %}
         <a class="work-card" href="{{ work.url | relative_url }}">
           <img class="work-card__image" src="{{ work.image | relative_url }}" alt="{{ work.image_alt | default: work.title | escape }}" loading="lazy">
-          <span class="work-card__category">{{ work.category }}</span>
+          {% assign work_category = work.categories | first | default: work.category %}
+          <span class="work-card__category">{{ work_category }}</span>
           <span class="work-card__title">{{ work.title }}</span>
         </a>
       {% endfor %}

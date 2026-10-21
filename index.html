@@ -721,6 +721,11 @@ body {
   transition: opacity 260ms ease;
 }
 
+.process__step[data-frames*="/frames/build/"] .process__canvas {
+  top: 45%;
+  width: 83.18%;
+}
+
 .process__step--anim .process__title {
   width: fit-content;
   transform-origin: left bottom;
@@ -1393,7 +1398,8 @@ body {
         <img class="selected-case__image" src="{{ work.image | relative_url }}" alt="{{ work.image_alt | default: work.title | escape }}" width="1440" height="810" loading="lazy">
         <span class="selected-case__content">
           <span class="selected-case__label">{{ work.title }}</span>
-          {% if work.summary %}<span class="selected-case__summary">{{ work.summary }}</span>{% endif %}
+          {% assign work_summary = work.description | default: work.summary %}
+          {% if work_summary %}<span class="selected-case__summary">{{ work_summary }}</span>{% endif %}
         </span>
       </a>
     {% endfor %}
@@ -1424,11 +1430,13 @@ body {
       <span class="process__number">04</span><span class="process__arrow" aria-hidden="true">+</span>
       <div><h3 class="process__title">Design</h3><p class="process__summary">Product, interface and campaign design refined through rapid iteration.</p></div>
     </li>
-    <li class="process__step" tabindex="0">
+    <li class="process__step process__step--anim" tabindex="0" data-frames="{{ '/frames/build/' | relative_url }}" data-frame-count="121">
+      <canvas class="process__canvas" width="480" height="480" aria-hidden="true"></canvas>
       <span class="process__number">05</span><span class="process__arrow" aria-hidden="true">+</span>
       <div><h3 class="process__title">Build</h3><p class="process__summary">Websites and digital experiences developed with precision and performance.</p></div>
     </li>
-    <li class="process__step" tabindex="0">
+    <li class="process__step process__step--anim" tabindex="0" data-frames="{{ '/frames/launch/' | relative_url }}" data-frame-count="55">
+      <canvas class="process__canvas" width="480" height="480" aria-hidden="true"></canvas>
       <span class="process__number">06</span><span class="process__arrow" aria-hidden="true">+</span>
       <div><h3 class="process__title">Launch</h3><p class="process__summary">Hands-on support to bring the system to market and keep it consistent.</p></div>
     </li>

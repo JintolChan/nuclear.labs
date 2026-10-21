@@ -2,10 +2,10 @@
 title: Identity Study 42
 date: 2026-02-01
 pinned: true
-category: Brand Identity
+categories: [Brand Identity]
+description: "An identity study focused on typography, composition, and recognition."
 image: /works/optimized/42.jpg
 image_alt: Brand identity visual study
-summary: An identity study focused on typography, composition, and recognition.
 ---
 
 ## Project overview

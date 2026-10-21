@@ -21,10 +21,14 @@ title: "{{ page.title }} · {{ site.title }}"
     body { margin: 0; background: #000; color: #fff; font-family: 'Switzer', 'Inter', system-ui, -apple-system, sans-serif; overflow-x: hidden; }
     .work-page { padding-top: 8rem; }
     .work-header, .work-content { width: min(100% - 2rem, 980px); margin-inline: auto; }
-    .work-header { padding-block: 1.5rem 4rem; }
+    .work-header { position: relative; width: 100%; min-height: 16rem; padding: 1.5rem 2rem 4rem; }
     .work-home { text-decoration: none; }
-    .work-category { margin: 4rem 0 1rem; color: #a1ff00; }
-    .work-header h1 { max-width: 13ch; margin: 0; font-size: clamp(3rem, 9vw, 7rem); line-height: .92; letter-spacing: -.06em; }
+    .work-category { position: absolute; top: 5.5rem; left: 2rem; margin: 0; color: #8a8a8a; font-size: 1.75vw; }
+    @media (max-width: 768px) {
+      .work-header { min-height: 12rem; padding-inline: 1rem; }
+      .work-category { top: 4.5rem; left: 1rem; font-size: .975rem; }
+    }
+    .work-header h1 { max-width: 13ch; margin: 0 auto; font-size: clamp(3rem, 9vw, 7rem); font-weight: 400; line-height: .92; letter-spacing: -.06em; text-align: center; }
     .work-cover { display: block; width: 100%; max-height: 80vh; object-fit: cover; }
     .work-content { padding-block: 4rem 8rem; font-size: clamp(1.1rem, 2vw, 1.45rem); line-height: 1.55; }
     .work-content > * { max-width: 760px; }
@@ -37,8 +41,8 @@ title: "{{ page.title }} · {{ site.title }}"
   {% include site-nav.html %}
   <main class="work-page">
     <header class="work-header">
-      <a class="work-home" href="{{ '/' | relative_url }}">Nuclear</a>
-      <p class="work-category">{{ page.category }}</p>
+      {% assign work_category = page.categories | first | default: page.category %}
+      <p class="work-category">{{ work_category }}</p>
       <h1>{{ page.title }}</h1>
     </header>
     <img class="work-cover" src="{{ page.image | relative_url }}" alt="{{ page.image_alt | default: page.title | escape }}">

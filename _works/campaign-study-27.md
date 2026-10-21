@@ -2,10 +2,10 @@
 title: Campaign Study 27
 date: 2026-01-01
 pinned: true
-category: Art Direction
+categories: [Art Direction]
+description: "A visual exploration of campaign systems and art direction."
 image: /works/optimized/27.jpg
 image_alt: Art direction and campaign visual study
-summary: A visual exploration of campaign systems and art direction.
 ---
 
 ## Project overview
