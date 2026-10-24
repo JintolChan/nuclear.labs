@@ -1,0 +1,135 @@
+---
+layout: null
+permalink: /contact/
+title: Contact | Nuclear Labs
+description: Start a conversation with Nuclear Labs.
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Nuclear Labs</title>
+<link rel="icon" href="{{ '/favicon.svg' | relative_url }}" type="image/svg+xml">
+<link rel="stylesheet" href="https://fonts.cdnfonts.com/css/switzer">
+<link rel="stylesheet" href="{{ '/site-shell.css' | relative_url }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root { --contact-accent: #a1ff00; }
+*, *::before, *::after { box-sizing: border-box; }
+html { font-size: 16px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+body { margin: 0; overflow-x: hidden; background: #000; color: #fff; font-family: 'Switzer', 'Inter', system-ui, sans-serif; }
+.contact-page { min-height: 100vh; padding: 13rem 6.7vw 8rem; }
+.contact-intro { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(18rem, .85fr); gap: 7vw; align-items: end; max-width: 100rem; margin: 0 auto 10rem; }
+.contact-eyebrow { margin: 0 0 2rem; color: var(--contact-accent); font-size: clamp(.85rem, 1.1vw, 1.15rem); font-weight: 500; letter-spacing: .02em; text-transform: uppercase; }
+.contact-title { max-width: 9ch; margin: 0; font-size: clamp(3.825rem, 9.775vw, 11.05rem); font-weight: 400; line-height: .86; letter-spacing: -.034286em; }
+.contact-lead { max-width: 25rem; margin: 0 0 .25rem; color: #d8d8d8; font-size: clamp(1.25rem, 2vw, 2rem); line-height: 1.08; letter-spacing: -.045em; }
+.contact-layout { display: grid; grid-template-columns: minmax(13rem, .7fr) minmax(0, 1.3fr); gap: 7vw; max-width: 100rem; margin: 0 auto; }
+.contact-details { display: grid; align-content: start; gap: 3rem; }
+.contact-detail { display: grid; gap: .55rem; }
+.contact-detail__label { color: #777; font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; }
+.contact-detail a, .contact-detail p { margin: 0; color: #fff; font-size: clamp(1.2rem, 1.8vw, 1.8rem); line-height: 1.1; letter-spacing: -.04em; text-decoration: none; }
+.contact-detail a:hover, .contact-detail a:focus-visible { color: var(--contact-accent); }
+.contact-detail__note { color: #999 !important; font-size: .95rem !important; line-height: 1.35 !important; letter-spacing: -.02em !important; }
+.contact-form { border-top: 1px solid #555; }
+.contact-field { position: relative; display: grid; grid-template-columns: minmax(7rem, .5fr) minmax(0, 1.5fr); gap: 1.5rem; align-items: center; min-height: 5.75rem; border-bottom: 1px solid #555; }
+.contact-field label { color: #a9a9a9; font-size: 1rem; letter-spacing: -.02em; }
+.contact-field input, .contact-field select, .contact-field textarea { width: 100%; padding: 1.7rem 0; border: 0; outline: 0; background: transparent; color: #fff; font: inherit; font-size: clamp(1.15rem, 1.7vw, 1.65rem); letter-spacing: -.04em; }
+.contact-field input::placeholder, .contact-field textarea::placeholder { color: #666; }
+.contact-field select { appearance: none; cursor: pointer; }
+.contact-field select option { background: #111; color: #fff; }
+.contact-field textarea { min-height: 10rem; padding-block: 1.8rem; resize: vertical; line-height: 1.25; }
+.contact-field:focus-within label { color: var(--contact-accent); }
+.contact-submit-row { display: flex; align-items: center; justify-content: space-between; gap: 2rem; padding-top: 2.25rem; }
+.contact-submit { padding: .85rem 1.4rem; border: 1px solid var(--contact-accent); border-radius: 0; background: var(--contact-accent); color: #000; font: inherit; font-size: 1rem; font-weight: 500; cursor: pointer; transition: background 180ms ease, color 180ms ease; }
+.contact-submit:hover, .contact-submit:focus-visible { background: transparent; color: var(--contact-accent); }
+.contact-privacy { max-width: 24rem; margin: 0; color: #777; font-size: .8rem; line-height: 1.35; }
+.contact-privacy a { color: inherit; }
+.contact-privacy a:hover, .contact-privacy a:focus-visible { color: #fff; }
+@media (max-width: 768px) {
+  .contact-page { padding: 9rem 1.5rem 5rem; }
+  .contact-intro { display: block; margin-bottom: 6rem; }
+  .contact-eyebrow { margin-bottom: 1.5rem; }
+  .contact-title { max-width: 7ch; font-size: clamp(3.74rem, 17.85vw, 6.375rem); font-weight: 400; line-height: .86; letter-spacing: -.034286em; }
+  .contact-lead { max-width: 20rem; margin-top: 2rem; font-size: 1.35rem; }
+  .contact-layout { display: flex; flex-direction: column; gap: 5rem; }
+  .contact-details { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.5rem 1.5rem; }
+  .contact-detail:last-child { grid-column: 1 / -1; }
+  .contact-detail a, .contact-detail p { font-size: 1.25rem; }
+  .contact-field { grid-template-columns: 1fr; gap: 0; align-items: start; min-height: auto; padding: 1.15rem 0 0; }
+  .contact-field label { font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; }
+  .contact-field input, .contact-field select, .contact-field textarea { padding: .8rem 0 1.2rem; font-size: 1.2rem; }
+  .contact-field textarea { min-height: 8rem; }
+  .contact-submit-row { align-items: flex-start; flex-direction: column-reverse; gap: 1.5rem; }
+}
+</style>
+</head>
+<body>
+{% include site-nav.html %}
+<main class="contact-page" id="top">
+  <section class="contact-intro" aria-labelledby="contact-title">
+    <div>
+      <h1 class="contact-title" id="contact-title">Let’s make something matter.</h1>
+    </div>
+    <p class="contact-lead">Tell us what you’re building, changing, or imagining. We’ll get back to you with the right next step.</p>
+  </section>
+
+  <section class="contact-layout" aria-label="Contact Nuclear Labs">
+    <div class="contact-details">
+      <div class="contact-detail">
+        <span class="contact-detail__label">Email</span>
+        <a href="mailto:hello@example.com">info@nuclearlabs.design</a>
+      </div>
+      <div class="contact-detail">
+        <span class="contact-detail__label">Locations</span>
+        <p>Shenzhen</p>
+      </div>
+      <div class="contact-detail">
+        <span class="contact-detail__label">Time zone</span>
+        <p>GMT+8 · We work globally</p>
+        <p class="contact-detail__note">For partnerships, careers, or general enquiries, use the form and we’ll route your message.</p>
+      </div>
+    </div>
+
+    <form class="contact-form" action="mailto:hello@example.com" method="post" enctype="text/plain">
+      <div class="contact-field">
+        <label for="name">Name<span aria-hidden="true">*</span></label>
+        <input id="name" name="Name" type="text" autocomplete="name" placeholder="Your name" required>
+      </div>
+      <div class="contact-field">
+        <label for="email">Email<span aria-hidden="true">*</span></label>
+        <input id="email" name="Email" type="email" autocomplete="email" placeholder="you@company.com" required>
+      </div>
+      <div class="contact-field">
+        <label for="company">Company</label>
+        <input id="company" name="Company" type="text" autocomplete="organization" placeholder="Your company or brand">
+      </div>
+      <div class="contact-field">
+        <label for="reason">I’m reaching out about</label>
+        <select id="reason" name="Reason">
+          <option value="" selected>Select one</option>
+          <option>Brand strategy</option>
+          <option>Identity &amp; design</option>
+          <option>Campaign or launch</option>
+          <option>Partnership</option>
+          <option>Careers</option>
+          <option>Something else</option>
+        </select>
+      </div>
+      <div class="contact-field">
+        <label for="message">Message<span aria-hidden="true">*</span></label>
+        <textarea id="message" name="Message" placeholder="Tell us a little about the project" required></textarea>
+      </div>
+      <div class="contact-submit-row">
+        <p class="contact-privacy">By sending this form, you agree that we can use your details to reply to your enquiry. We do not share your information with third parties.</p>
+        <button class="contact-submit" type="submit">Send enquiry ↗</button>
+      </div>
+    </form>
+  </section>
+</main>
+{% include site-footer.html %}
+<script src="{{ '/site-shell.js' | relative_url }}"></script>
+</body>
+</html>
