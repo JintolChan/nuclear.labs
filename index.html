@@ -46,33 +46,13 @@ body {
   background: #000;
 }
 
-.hero__slide {
+.hero__video {
   position: absolute;
   inset: 0;
-  margin: 0;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 900ms cubic-bezier(0.4, 0, 0.2, 1), visibility 900ms;
-}
-
-.hero__slide.is-active {
-  opacity: 1;
-  visibility: visible;
-}
-
-.hero__slide img,
-.hero__slide video {
   width: 100%;
   height: 100%;
   display: block;
   object-fit: cover;
-  transform: scale(1.025);
-  transition: transform 8s ease-out;
-}
-
-.hero__slide.is-active img,
-.hero__slide.is-active video {
-  transform: scale(1);
 }
 
 .hero__showcase::after {
@@ -87,45 +67,6 @@ body {
     linear-gradient(90deg, rgb(0 0 0 / 25%), transparent 45%, rgb(0 0 0 / 10%));
 }
 
-.hero__pagination {
-  position: absolute;
-  z-index: 6;
-  left: 50%;
-  bottom: 1.25rem;
-  display: flex;
-  gap: 0.5rem;
-  transform: translateX(-50%);
-}
-
-.hero__pagination-button {
-  width: 2.75rem;
-  height: 0.2rem;
-  padding: 0;
-  border: 0;
-  border-radius: 999px;
-  background: rgb(255 255 255 / 38%);
-  cursor: pointer;
-  overflow: hidden;
-}
-
-.hero__pagination-button::after {
-  content: "";
-  display: block;
-  width: 100%;
-  height: 100%;
-  border-radius: inherit;
-  background: #a1ff00;
-  transform: scaleX(0);
-  transform-origin: left;
-}
-
-.hero__pagination-button[aria-current="true"]::after {
-  animation: carouselProgress 6s linear forwards;
-}
-
-@keyframes carouselProgress {
-  to { transform: scaleX(1); }
-}
 
 .nav {
   position: absolute;
@@ -1115,17 +1056,8 @@ body {
       linear-gradient(180deg, transparent 30%, rgb(0 0 0 / 90%) 100%);
   }
 
-  .hero__slide img,
-  .hero__slide video {
+  .hero__video {
     object-position: center;
-  }
-
-  .hero__pagination {
-    bottom: 1rem;
-  }
-
-  .hero__pagination-button {
-    width: 2rem;
   }
 
   .hero__content {
@@ -1343,17 +1275,10 @@ body {
   .nav__panel,
   .nav__panel.is-open,
   .nav__link,
-  .hero__slide,
-  .hero__slide img,
-  .hero__slide video,
+  .hero__video,
   .services__image,
   .services__link {
     transition: none;
-  }
-
-  .hero__pagination-button[aria-current="true"]::after {
-    animation: none;
-    transform: scaleX(1);
   }
 }
 </style>
@@ -1361,17 +1286,10 @@ body {
 <body id="top">
 
 <section class="hero">
-  <div class="hero__showcase" aria-label="Selected work">
-    <figure class="hero__slide is-active" aria-hidden="false">
-      <img src="works/hero椤典富鍥句笓�?Slide%2016_9%20-%2018.jpg" alt="Cryptocurrency wallet mobile product design" fetchpriority="high">
-    </figure>
-    <figure class="hero__slide" aria-hidden="true">
-      <img src="works/hero椤典富鍥句笓�?Slide%2016_9%20-%2016.jpg" alt="Restaurant menu identity and print design" loading="eager">
-    </figure>
-  </div>
-  <div class="hero__pagination" aria-label="Choose featured work">
-    <button class="hero__pagination-button" type="button" aria-label="Show cryptocurrency wallet project" aria-current="true"></button>
-    <button class="hero__pagination-button" type="button" aria-label="Show restaurant identity project" aria-current="false"></button>
+  <div class="hero__showcase" aria-label="Featured motion">
+    <video class="hero__video" autoplay muted loop playsinline preload="auto" aria-label="Nuclear Labs brand film">
+      <source src="{{ '/assets/videos/hero.mp4' | relative_url }}" type="video/mp4">
+    </video>
   </div>
   {% include site-nav.html %}
 
@@ -1581,43 +1499,7 @@ const description = document.querySelector('.hero__desc');
 const menuLink = document.querySelector('.nav__link');
 
 const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-const desktopQuery = window.matchMedia('(min-width: 769px)');
-const slides = Array.from(document.querySelectorAll('.hero__slide'));
-const paginationButtons = Array.from(document.querySelectorAll('.hero__pagination-button'));
-const carouselInterval = 6000;
-let activeSlide = 0;
-let carouselTimer;
 let layoutFrame;
-
-function showSlide(index, restart = true) {
-  activeSlide = (index + slides.length) % slides.length;
-
-  slides.forEach((slide, slideIndex) => {
-    const isActive = slideIndex === activeSlide;
-    slide.classList.toggle('is-active', isActive);
-    slide.setAttribute('aria-hidden', String(!isActive));
-  });
-
-  paginationButtons.forEach((button, buttonIndex) => {
-    button.setAttribute('aria-current', String(buttonIndex === activeSlide));
-  });
-
-  if (restart) startCarousel();
-}
-
-function startCarousel() {
-  clearInterval(carouselTimer);
-  if (reducedMotionQuery.matches || document.hidden || slides.length < 2) return;
-  carouselTimer = setInterval(() => showSlide(activeSlide + 1, false), carouselInterval);
-}
-
-paginationButtons.forEach((button, index) => {
-  button.addEventListener('click', () => showSlide(index));
-});
-
-document.addEventListener('visibilitychange', startCarousel);
-reducedMotionQuery.addEventListener('change', startCarousel);
-startCarousel();
 
 
 const servicesSection = document.querySelector('.services');
