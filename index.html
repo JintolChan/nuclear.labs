@@ -262,7 +262,11 @@ body {
   gap: 2rem;
 }
 
-.hero__text { flex: 1; min-width: 0; }
+.hero__text {
+  flex: 1;
+  min-width: 0;
+  transform: translateY(10%);
+}
 
 .hero__content.is-stacked {
   flex-direction: column;
@@ -1070,7 +1074,11 @@ body {
     padding: 0 1.5rem;
     text-align: center;
   }
-  .hero__text { width: 100%; flex: 0 0 auto; }
+  .hero__text {
+    width: 100%;
+    flex: 0 0 auto;
+    transform: none;
+  }
   .hero__desc {
     display: block;
     left: 0;
@@ -1499,6 +1507,7 @@ const description = document.querySelector('.hero__desc');
 const menuLink = document.querySelector('.nav__link');
 
 const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+const desktopQuery = window.matchMedia('(min-width: 769px)');
 let layoutFrame;
 
 
