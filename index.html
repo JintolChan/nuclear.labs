@@ -371,7 +371,7 @@ body {
   background: #171717;
 }
 
-.services__image {
+.services__media {
   display: block;
   width: 100%;
   height: 100%;
@@ -379,7 +379,7 @@ body {
   transition: opacity 180ms ease;
 }
 
-.services__image.is-changing {
+.services__media.is-changing {
   opacity: 0;
 }
 
@@ -1283,8 +1283,7 @@ body {
   .nav__panel,
   .nav__panel.is-open,
   .nav__link,
-  .hero__video,
-  .services__image,
+  .services__media,
   .services__link {
     transition: none;
   }
@@ -1321,7 +1320,7 @@ body {
     <div class="services__layout">
       <figure class="services__visual">
         <img
-          class="services__image"
+          class="services__media"
           src="/works/optimized/43.jpg"
           alt="Brand identity guidelines and outdoor billboard design"
           width="1440"
@@ -1332,15 +1331,14 @@ body {
 
       <ul class="services__list" aria-label="Services">
         <li><button class="services__link is-active" type="button" aria-pressed="true" data-service-image="/works/optimized/43.jpg" data-service-alt="Brand identity guidelines and outdoor billboard design">Brand Strategy</button></li>
-        <li><button class="services__link" type="button" aria-pressed="false" data-service-image="/works/optimized/42.jpg" data-service-alt="Brand identity guidelines and visual applications">Brand Identity</button></li>
+        <li><button class="services__link" type="button" aria-pressed="false" data-service-image="/assets/images/landing/brandidentity.mp4" data-service-alt="Brand identity guidelines and visual applications">Brand Identity</button></li>
         <li><button class="services__link" type="button" aria-pressed="false" data-service-image="/works/optimized/18.jpg" data-service-alt="Mobile cryptocurrency wallet product interface">Product Design</button></li>
-        <li><button class="services__link" type="button" aria-pressed="false" data-service-image="/works/optimized/18.jpg" data-service-alt="Mobile cryptocurrency wallet product interface">UX / UI Design</button></li>
+        <li><button class="services__link" type="button" aria-pressed="false" data-service-image="/works/optimized/18.jpg" data-service-alt="Mobile cryptocurrency wallet product interface">UI / UX Design</button></li>
         <li><button class="services__link" type="button" aria-pressed="false" data-service-image="/works/optimized/25.jpg" data-service-alt="Digital brand and interface design concepts">Website Development</button></li>
-        <li><button class="services__link" type="button" aria-pressed="false" data-service-image="/works/optimized/27.jpg" data-service-alt="Abstract orange brand identity campaign">Brand Video</button></li>
         <li><button class="services__link" type="button" aria-pressed="false" data-service-image="/works/optimized/42.jpg" data-service-alt="Brand identity guidelines and visual applications">Pitch Deck</button></li>
         <li><button class="services__link" type="button" aria-pressed="false" data-service-image="/works/optimized/26.jpg" data-service-alt="Bright typographic campaign concepts">Content Creation</button></li>
-        <li><button class="services__link" type="button" aria-pressed="false" data-service-image="/works/optimized/26.jpg" data-service-alt="Bright typographic campaign concepts">Paid Social</button></li>
-        <li><button class="services__link" type="button" aria-pressed="false" data-service-image="/works/optimized/43.jpg" data-service-alt="Brand identity guidelines and outdoor billboard design">Advertising</button></li>
+        <li><button class="services__link" type="button" aria-pressed="false" data-service-image="/works/optimized/27.jpg" data-service-alt="Bright typographic campaign concepts">Social Ads</button></li>
+        <li><button class="services__link" type="button" aria-pressed="false" data-service-image="/works/optimized/27.jpg" data-service-alt="Brand identity guidelines and outdoor billboard design">Advertising</button></li>
       </ul>
     </div>
   </div>
@@ -1512,44 +1510,62 @@ let layoutFrame;
 
 
 const servicesSection = document.querySelector('.services');
-const serviceImage = document.querySelector('.services__image');
+let serviceMedia = document.querySelector('.services__media');
 const serviceButtons = Array.from(document.querySelectorAll('.services__link'));
 let activeServiceButton = serviceButtons.find(button => button.classList.contains('is-active'));
-let serviceImageRequest = 0;
+let serviceMediaRequest = 0;
+
+function isVideoSource(source) {
+  return /\.(mp4|webm|ogg)(?:[?#].*)?$/i.test(source);
+}
 
 function setActiveService(button) {
   if (!button || button === activeServiceButton) return;
 
   activeServiceButton = button;
-  const imageRequest = ++serviceImageRequest;
+  const mediaRequest = ++serviceMediaRequest;
   serviceButtons.forEach(serviceButton => {
     const isActive = serviceButton === button;
     serviceButton.classList.toggle('is-active', isActive);
     serviceButton.setAttribute('aria-pressed', String(isActive));
   });
 
-  const imageSource = button.dataset.serviceImage;
-  const imageAlt = button.dataset.serviceAlt;
-  if (serviceImage.getAttribute('src') === imageSource) {
-    serviceImage.alt = imageAlt;
-    serviceImage.classList.remove('is-changing');
+  const mediaSource = button.dataset.serviceImage;
+  const mediaAlt = button.dataset.serviceAlt;
+  const video = isVideoSource(mediaSource);
+  if (serviceMedia.dataset.source === mediaSource) {
+    serviceMedia.setAttribute('aria-label', mediaAlt);
+    if (video) serviceMedia.play().catch(() => {});
+    serviceMedia.classList.remove('is-changing');
     return;
   }
 
-  serviceImage.classList.add('is-changing');
-  const nextImage = new Image();
-  nextImage.onload = () => {
-    if (imageRequest !== serviceImageRequest) return;
-    serviceImage.src = imageSource;
-    serviceImage.alt = imageAlt;
-    serviceImage.classList.remove('is-changing');
+  serviceMedia.classList.add('is-changing');
+  const nextMedia = video ? document.createElement('video') : new Image();
+  nextMedia.className = 'services__media';
+  nextMedia.setAttribute('aria-label', mediaAlt);
+  nextMedia.dataset.source = mediaSource;
+  if (video) {
+    nextMedia.autoplay = true;
+    nextMedia.muted = true;
+    nextMedia.loop = true;
+    nextMedia.playsInline = true;
+    nextMedia.preload = 'metadata';
+  }
+  nextMedia.onload = nextMedia.onloadeddata = () => {
+    if (mediaRequest !== serviceMediaRequest) return;
+    serviceMedia.replaceWith(nextMedia);
+    serviceMedia = nextMedia;
+    nextMedia.classList.remove('is-changing');
+    if (video) nextMedia.play().catch(() => {});
   };
-  nextImage.onerror = () => {
-    if (imageRequest !== serviceImageRequest) return;
-    console.error(`Unable to load services preview image: ${imageSource}`);
-    serviceImage.classList.remove('is-changing');
+  nextMedia.onerror = () => {
+    if (mediaRequest !== serviceMediaRequest) return;
+    console.error(`Unable to load services preview media: ${mediaSource}`);
+    serviceMedia.classList.remove('is-changing');
   };
-  nextImage.src = imageSource;
+  nextMedia.src = mediaSource;
+  if (!video) nextMedia.alt = mediaAlt;
 }
 
 serviceButtons.forEach(button => {
