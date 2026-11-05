@@ -258,7 +258,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  padding: 0 3rem 3.5rem;
+  padding: 0 3rem 10rem;
   gap: 2rem;
 }
 
@@ -315,6 +315,48 @@ body {
   flex-shrink: 0;
   text-align: left;
   margin-left: auto;
+}
+
+.hero__logos {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 6;
+  overflow: hidden;
+  padding: 1.5rem 0;
+  background: rgb(0 0 0 / 42%);
+  backdrop-filter: blur(0.5rem);
+  -webkit-backdrop-filter: blur(0.5rem);
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+
+.hero__logos-track {
+  display: flex;
+  width: max-content;
+  animation: heroLogoScroll 28s linear infinite;
+  will-change: transform;
+}
+
+.hero__logos-group {
+  display: flex;
+  align-items: center;
+  gap: clamp(3.5rem, 6vw, 7rem);
+  padding-right: clamp(3.5rem, 6vw, 7rem);
+}
+
+.hero__client-logo {
+  display: block;
+  width: auto;
+  height: clamp(1.7rem, 2.25vw, 2.65rem);
+  max-width: clamp(7.5rem, 11vw, 11rem);
+  object-fit: contain;
+  opacity: 0.82;
+}
+
+@keyframes heroLogoScroll {
+  to { transform: translateX(-50%); }
 }
 
 .hero__content,
@@ -1071,8 +1113,19 @@ body {
     justify-content: center;
     align-items: center;
     gap: 1.25rem;
-    padding: 0 1.5rem;
+    padding: 0 1.5rem 7.25rem;
     text-align: center;
+  }
+  .hero__logos {
+    padding: 1.1rem 0;
+  }
+  .hero__logos-group {
+    gap: 3rem;
+    padding-right: 3rem;
+  }
+  .hero__client-logo {
+    height: 1.55rem;
+    max-width: 7.5rem;
   }
   .hero__text {
     width: 100%;
@@ -1276,6 +1329,10 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .hero__logos-track {
+    animation-play-state: paused;
+  }
+
   .nav__toggle-lines,
   .nav__toggle-lines::before,
   .nav::before,
@@ -1311,6 +1368,23 @@ body {
       We are a global branding &amp; design studio, working with founders to create brands, products &amp; digital experiences for the new internet.
     </p>
   </div>
+
+  <div class="hero__logos" aria-label="Selected clients">
+    <div class="hero__logos-track">
+      {% for copy in (1..2) %}
+        <div class="hero__logos-group"{% if copy == 2 %} aria-hidden="true"{% endif %}>
+          <img class="hero__client-logo" src="{{ '/assets/images/logos/alicenetworks.svg' | relative_url }}" alt="Alice Networks" width="1413" height="377">
+          <img class="hero__client-logo" src="{{ '/assets/images/logos/gmwallet.svg' | relative_url }}" alt="GM Wallet" width="2226" height="343">
+          <img class="hero__client-logo" src="{{ '/assets/images/logos/pkmone.svg' | relative_url }}" alt="PKM.ONE" width="891" height="406">
+          <img class="hero__client-logo" src="{{ '/assets/images/logos/setsyn.svg' | relative_url }}" alt="Setsyn" width="1749" height="390">
+          <img class="hero__client-logo" src="{{ '/assets/images/logos/sparkdance.svg' | relative_url }}" alt="Spark Dance" width="2647" height="417">
+          <img class="hero__client-logo" src="{{ '/assets/images/logos/surgelab.svg' | relative_url }}" alt="Surge Lab" width="2071" height="398">
+          <img class="hero__client-logo" src="{{ '/assets/images/logos/trendforge.svg' | relative_url }}" alt="Trend Forge" width="2264" height="407">
+          <img class="hero__client-logo" src="{{ '/assets/images/logos/vastbit.svg' | relative_url }}" alt="VastBit" width="2127" height="713">
+        </div>
+      {% endfor %}
+    </div>
+  </div>
 </section>
 
 <section class="services" id="services" aria-labelledby="services-title">
@@ -1331,9 +1405,9 @@ body {
 
       <ul class="services__list" aria-label="Services">
         <li><button class="services__link is-active" type="button" aria-pressed="true" data-service-image="/works/optimized/43.jpg" data-service-alt="Brand identity guidelines and outdoor billboard design">Brand Strategy</button></li>
-        <li><button class="services__link" type="button" aria-pressed="false" data-service-image="/assets/images/landing/brandidentity.mp4" data-service-alt="Brand identity guidelines and visual applications">Brand Identity</button></li>
+        <li><button class="services__link" type="button" aria-pressed="false" data-service-image="/assets/videos/landing/brandidentity.mp4" data-service-alt="Brand identity guidelines and visual applications">Brand Identity</button></li>
         <li><button class="services__link" type="button" aria-pressed="false" data-service-image="/works/optimized/18.jpg" data-service-alt="Mobile cryptocurrency wallet product interface">Product Design</button></li>
-        <li><button class="services__link" type="button" aria-pressed="false" data-service-image="/works/optimized/18.jpg" data-service-alt="Mobile cryptocurrency wallet product interface">UI / UX Design</button></li>
+        <li><button class="services__link" type="button" aria-pressed="false" data-service-image="/assets/videos/landing/uiux.mp4" data-service-alt="Mobile product interface and user experience design">UI / UX Design</button></li>
         <li><button class="services__link" type="button" aria-pressed="false" data-service-image="/works/optimized/25.jpg" data-service-alt="Digital brand and interface design concepts">Website Development</button></li>
         <li><button class="services__link" type="button" aria-pressed="false" data-service-image="/works/optimized/42.jpg" data-service-alt="Brand identity guidelines and visual applications">Pitch Deck</button></li>
         <li><button class="services__link" type="button" aria-pressed="false" data-service-image="/works/optimized/26.jpg" data-service-alt="Bright typographic campaign concepts">Content Creation</button></li>
