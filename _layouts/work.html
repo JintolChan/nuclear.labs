@@ -32,8 +32,19 @@ title: "{{ page.title }} · {{ site.title }}"
     .work-header h1 { max-width: 13ch; margin: 0 auto; font-size: clamp(3rem, 9vw, 7rem); font-weight: 400; line-height: .92; letter-spacing: -.06em; text-align: center; }
     .work-cover { display: block; width: 100%; max-height: 80vh; object-fit: cover; }
     .work-content { padding-block: 4rem 8rem; font-size: clamp(1.1rem, 2vw, 1.45rem); line-height: 1.55; }
-    .work-content > * { max-width: 760px; }
-    .work-content img { max-width: 100%; height: auto; }
+    .work-content > * { max-width: 760px; margin-inline: auto; }
+    .work-content > p:has(> img:only-child),
+    .work-content > p:has(> a > img:only-child) { max-width: none; }
+    .work-content :is(h1, h2, h3, h4, h5, h6) { font-weight: 350; }
+    .work-content img { display: block; max-width: 100%; height: auto; margin-inline: auto; }
+    .work-content p:has(> img:only-child) > img,
+    .work-content p:has(> a > img:only-child) img { width: 100%; }
+    .work-content img[align="left"], .work-content img[align="right"] { display: inline; width: auto; max-width: 45%; }
+    .work-content img[align="right"] { margin-left: 2rem; }
+    .work-content img[align="left"] { margin-right: 2rem; }
+    @media (max-width: 768px) {
+      .work-content img[align="left"], .work-content img[align="right"] { max-width: 55%; }
+    }
     .work-page .site-nav { position: fixed; }
     .work-page .site-footer { margin-top: 4rem; }
   </style>
